@@ -30,6 +30,7 @@ public class SessionResource extends AbstractResource {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Session created successfully"),
             @ApiResponse(responseCode = "401", description = "User is not logged in via Keycloak", content = @Content)
+            @ApiResponse(responseCode = "403", description = "User already owns too many sessions", content = @Content)
     })
     @PostMapping()
     @ResponseBody

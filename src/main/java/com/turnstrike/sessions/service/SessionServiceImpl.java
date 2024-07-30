@@ -18,6 +18,9 @@ public class SessionServiceImpl implements SessionService {
 	private final ModelMapper modelMapper;
 
 	public Session createSession(String userId, Session session) {
+		if (sessionRepository.existsByOwnerId(session.getOwnerId())) {
+			throw new ResponseStatusException(HttpStatusCode.valueOf(403));
+		}
 		SessionEntity sessionEntity = sessionFactory.createSessionEntity(userId, session);
 		SessionEntity savedSessionEntity = sessionRepository.save(sessionEntity);
 		return modelMapper.map(savedSessionEntity, Session.class);
@@ -44,12 +47,12 @@ public class SessionServiceImpl implements SessionService {
 
 	private SessionEntity findSessionByOwnerAndSessionID(String userId, Long sessionId) throws ResponseStatusException {
 		Optional<SessionEntity> sessionEntityOptional = sessionRepository.findById(sessionId);
-		if (sessionEntityOptional.isEmpty()){
+		if (sessionEntityOptional.isEmpty()) {
 			throw new ResponseStatusException(HttpStatusCode.valueOf(404));
 		}
 
 		SessionEntity sessionEntity = sessionEntityOptional.get();
-		if (!sessionEntity.getOwnerId().equals(userId)){
+		if (!sessionEntity.getOwnerId().equals(userId)) {
 			throw new ResponseStatusException(HttpStatusCode.valueOf(403));
 		}
 		return sessionEntity;
