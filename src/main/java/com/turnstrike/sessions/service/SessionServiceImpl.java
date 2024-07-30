@@ -11,8 +11,10 @@ import com.turnstrike.sessions.rest.model.Session;
 @RequiredArgsConstructor
 public class SessionServiceImpl implements SessionService {
 
-	private static final Long DEFAULT_MAX_PLAYER_COUNT = 10;
-	private static final Long MAX_MAX_PLAYER_COUNT = 30;
+	private static final Long DEFAULT_MAX_PLAYER_COUNT = 10L;
+
+	private static final Long MAX_MAX_PLAYER_COUNT = 30L;
+	
 	private final SessionRepository sessionRepository;
 
 	private final ModelMapper modelMapper;

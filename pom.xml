@@ -8,11 +8,11 @@
         <version>0.1.0-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.frameboter</groupId>
-    <artifactId>template</artifactId>
+    <groupId>com.turnstrike</groupId>
+    <artifactId>sessions</artifactId>
     <version>0.1.0-SNAPSHOT</version>
-    <name>template</name>
-    <description>template</description>
+    <name>sessions</name>
+    <description>Service for managing sessions</description>
     <properties>
         <java.version>21</java.version>
     </properties>
@@ -72,8 +72,8 @@
     <distributionManagement>
         <repository>
             <id>github</id>
-            <name>GitHub frameboter Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/frameboter/${project.artifactId}</url>
+            <name>GitHub turnstrike Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/turnstrike/${project.artifactId}</url>
         </repository>
     </distributionManagement>
 
