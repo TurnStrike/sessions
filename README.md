@@ -7,8 +7,8 @@ It uses Keycloak Robolock for authentication and authorization.
 # Usage
 
 Deploy this container with the following environment variables set:
-      - database_password=yourPassword
-      - database_url=jdbc:mariadb://YourDatabaseManagementSystem:3306/yourDatabase
-      - database_username=username
-      - domain_base=subdomain.domain.topleveldomain/api
-      - domain_prefix=http://
+- database_password={yourPassword}
+- database_url=jdbc:mariadb://{YourDatabaseManagementSystem}:3306/{yourDatabase}
+- database_username={username}
+- domain_base={subdomain}.{domain}.{topleveldomain}/api
+- domain_prefix=http(s)://
