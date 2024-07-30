@@ -1,6 +1,7 @@
 # Sessions Service
 
 This service manages sessions for turnstrike. 
+
 It's needed so that there can be a session browser, session creation and session joining by providing a database of available sessions to join.
 It uses Keycloak Robolock for authentication and authorization.
 
