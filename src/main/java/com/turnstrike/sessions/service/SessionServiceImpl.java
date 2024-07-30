@@ -11,8 +11,8 @@ import com.turnstrike.sessions.rest.model.Session;
 @RequiredArgsConstructor
 public class SessionServiceImpl implements SessionService {
 
-	private final SessionFactory sessionFactory;
-
+	private static final Long DEFAULT_MAX_PLAYER_COUNT = 10;
+	private static final Long MAX_MAX_PLAYER_COUNT = 30;
 	private final SessionRepository sessionRepository;
 
 	private final ModelMapper modelMapper;
@@ -21,7 +21,7 @@ public class SessionServiceImpl implements SessionService {
 		if (sessionRepository.existsByOwnerId(session.getOwnerId())) {
 			throw new ResponseStatusException(HttpStatusCode.valueOf(403));
 		}
-		SessionEntity sessionEntity = sessionFactory.createSessionEntity(userId, session);
+		SessionEntity sessionEntity = createSessionEntity(userId, session);
 		SessionEntity savedSessionEntity = sessionRepository.save(sessionEntity);
 		return modelMapper.map(savedSessionEntity, Session.class);
 	}
@@ -33,7 +33,7 @@ public class SessionServiceImpl implements SessionService {
 
 	public Session updateSession(String userId, Session sessionUpdate) {
 		SessionEntity sessionEntity = findSessionByOwnerAndSessionID(userId, sessionUpdate.getSessionId());
-		SessionEntity sessionEntityUpdate = sessionFactory.createSessionEntity(sessionUpdate.getOwnerId(), sessionUpdate);
+		SessionEntity sessionEntityUpdate = createSessionEntity(sessionUpdate.getOwnerId(), sessionUpdate);
 		SessionEntity mergedSessionEntity = mergeIntoSessionEntity(sessionEntity, sessionEntityUpdate);
 		SessionEntity updatedSessionentity = sessionRepository.save(mergedSessionEntity);
 		return modelMapper.map(updatedSessionentity, Session.class);
@@ -43,6 +43,23 @@ public class SessionServiceImpl implements SessionService {
 		SessionEntity sessionEntity = findSessionByOwnerAndSessionID(userId, sessionId);
 		SessionEntity deletedSession = sessionRepository.delete(sessionEntity);
 		return modelMapper.map(deletedSession, Session.class);
+	}
+
+	public SessionEntity createSessionEntity(String ownerId, Session session){
+		SessionEntity sessionEntity = new SessionEntity();
+		sessionEntity.setOwnerId(ownerId);
+		sessionEntity.setPlayerCount(0L);
+
+		if (session.getMaxPlayerCount() == null){
+			sessionEntity.setMaxPlayerCount(DEFAULT_MAX_PLAYER_COUNT);
+		} else if (session.getMaxPlayerCount() > MAX_MAX_PLAYER_COUNT) {
+			sessionEntity.setMaxPlayerCount(MAX_MAX_PLAYER_COUNT);
+		}else if (session.getMaxPlayerCount() <= 1){
+			sessionEntity.setMaxPlayerCount(DEFAULT_MAX_PLAYER_COUNT);
+		}else {
+			sessionEntity.setMaxPlayerCount(session.getMaxPlayerCount());
+		}
+		return sessionEntity;
 	}
 
 	private SessionEntity findSessionByOwnerAndSessionID(String userId, Long sessionId) throws ResponseStatusException {
